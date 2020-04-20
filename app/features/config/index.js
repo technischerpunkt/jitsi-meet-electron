@@ -16,6 +16,12 @@ export default {
     appName: 'Technischer Punkt Jitsi',
 
     /**
+    * The prefix for application protocol.
+    * You will also need to replace this in package.json.
+    */
+    appProtocolPrefix: 'jitsi',
+
+    /**
      * The default server URL of Jitsi Meet Deployment that will be used.
      */
     defaultServerURL: 'https://jitsi.technischerpunkt.org',
