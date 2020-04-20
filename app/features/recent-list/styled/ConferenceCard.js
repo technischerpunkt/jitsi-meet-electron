@@ -3,8 +3,9 @@
 import styled from 'styled-components';
 
 export default styled.div`
-    background: #1754A9;
-    border-radius: 0.5em;
+    background: #9a1c7f;
+    border: 3px solid white;
+    border-radius: 0;
     color: white;
     display: flex;
     flex-direction: column;

@@ -1,6 +1,6 @@
 # Jitsi Meet Electron
 
-Desktop application for [Jitsi Meet] built with [Electron].
+Fork from [Technischer Punkt] of the Desktop application for [Jitsi Meet] built with [Electron].
 
 ![](screenshot.png)
 
@@ -129,9 +129,10 @@ Apache 2. See the [LICENSE] file.
 Jitsi is built by a large community of developers, if you want to participate,
 please join [community forum].
 
+[Technischer Punkt]: https://technischerpunkt.org/
 [Jitsi Meet]: https://github.com/jitsi/jitsi-meet
 [Electron]: https://electronjs.org/
-[latest release]: https://github.com/jitsi/jitsi-meet-electron/releases/latest
+[latest release]: https://github.com/technischerpunkt/jitsi-meet-electron/releases/latest
 [jitsi-meet-electron-utils]: https://github.com/jitsi/jitsi-meet-electron-utils
 [jitsi-meet-electron-utils README]: https://github.com/jitsi/jitsi-meet-electron-utils/blob/master/README.md
 [community forum]: https://community.jitsi.org/

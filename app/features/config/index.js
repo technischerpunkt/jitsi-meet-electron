@@ -3,35 +3,35 @@ export default {
     /**
      * The URL with extra information about the app / service.
      */
-    aboutURL: 'https://jitsi.org/what-is-jitsi/',
+    aboutURL: 'https://technischerpunkt.org/',
 
     /**
      * The URL to the source code repository.
      */
-    sourceURL: 'https://github.com/jitsi/jitsi-meet-electron',
+    sourceURL: 'https://github.com/technischerpunkt/jitsi-meet-electron',
 
     /**
      * Application name.
      */
-    appName: 'Jitsi Meet',
+    appName: 'Technischer Punkt Jitsi',
 
     /**
      * The default server URL of Jitsi Meet Deployment that will be used.
      */
-    defaultServerURL: 'https://meet.jit.si',
+    defaultServerURL: 'https://jitsi.technischerpunkt.org',
 
     /**
      * URL to send feedback.
      */
-    feedbackURL: 'mailto:support@jitsi.org',
+    feedbackURL: 'mailto:kontakt@technischerpunkt.org',
 
     /**
      * The URL of Privacy Policy Page.
      */
-    privacyPolicyURL: 'https://jitsi.org/meet/privacy',
+    privacyPolicyURL: 'https://technischerpunkt.org/datenschutz/',
 
     /**
      * The URL of Terms and Conditions Page.
      */
-    termsAndConditionsURL: 'https://jitsi.org/meet/terms'
+    termsAndConditionsURL: 'https://technischerpunkt.org/'
 };

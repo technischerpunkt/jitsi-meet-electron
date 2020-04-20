@@ -1,9 +1,9 @@
 {
   "name": "jitsi-meet-electron",
   "version": "2.0.2",
-  "description": "Electron application for Jitsi Meet",
+  "description": "Electron application for Technischer Punkt Jitsi",
   "main": "./build/main.js",
-  "productName": "Jitsi Meet",
+  "productName": "Technischer Punkt",
   "scripts": {
     "start": "webpack --config ./webpack.main.js --mode development && concurrently \"npm:watch\" \"electron ./build/main.js\"",
     "clean": "rm -rf node_modules build dist",
@@ -16,8 +16,8 @@
     "watch": "webpack --config ./webpack.renderer.js --mode development --watch --watch-poll"
   },
   "build": {
-    "appId": "org.jitsi.jitsi-meet",
-    "productName": "Jitsi Meet",
+    "appId": "org.technischerpunkt.jitsi",
+    "productName": "Technischer Punkt",
     "generateUpdatesFilesForAllChannels": true,
     "files": [
       "**/*",
@@ -26,15 +26,15 @@
       "!main.js"
     ],
     "mac": {
-      "artifactName": "jitsi-meet.${ext}",
+      "artifactName": "technischerpunkt-jitsi.${ext}",
       "category": "public.app-category.video",
       "darkModeSupport": true
     },
     "linux": {
-      "artifactName": "jitsi-meet-${arch}.${ext}",
+      "artifactName": "technischerpunkt-jitsi-${arch}.${ext}",
       "category": "VideoConference;AudioVideo;Audio;Video;Network",
-      "description": "Jitsi Meet Desktop App",
-      "executableName": "jitsi-meet",
+      "description": "Technischer Punkt Jitsi Desktop App",
+      "executableName": "technischerpunkt-jitsi",
       "target": [
         {
           "arch": "x64",
@@ -43,7 +43,7 @@
       ]
     },
     "win": {
-      "artifactName": "jitsi-meet.${ext}",
+      "artifactName": "technischerpunkt-jitsi.${ext}",
       "target": [
         {
           "arch": [
@@ -63,16 +63,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/jitsi/jitsi-meet-electron"
+    "url": "git://github.com:technischerpunkt/jitsi-meet-electron"
   },
   "keywords": [
     "jingle",
     "webrtc",
     "xmpp",
     "electron",
-    "jitsi-meet"
+    "jitsi-meet",
+    "technischer punkt"
   ],
-  "author": "Jitsi Team <support@jitsi.org>",
+  "author": "Technischer Punkt <kontakt@technischerpunkt.org>",
   "readmeFilename": "README.md",
   "license": "Apache-2.0",
   "dependencies": {
