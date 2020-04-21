@@ -1,6 +1,6 @@
 {
   "name": "jitsi-meet-electron",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Electron application for Technischer Punkt Jitsi",
   "main": "./build/main.js",
   "productName": "Technischer Punkt",
@@ -43,7 +43,6 @@
         {
           "arch": "x64",
           "target": "deb"
-
         }
       ]
     },
