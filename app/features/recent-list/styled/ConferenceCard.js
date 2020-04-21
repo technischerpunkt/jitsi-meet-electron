@@ -15,5 +15,6 @@ export default styled.div`
     
     &:hover {
         cursor: pointer;
+        background: #bf109a;
     }
 `;
