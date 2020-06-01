@@ -169,7 +169,10 @@ function createJitsiMeetWindow() {
         minHeight: 600,
         show: false,
         webPreferences: {
-            experimentalFeatures: true, // Insertable streams, for E2EE.
+            // used for insertable streams, for E2EE
+            // cases bugs, so disabled for now
+            // see https://github.com/jitsi/jitsi-meet-electron/issues/352
+            experimentalFeatures: false,
             nativeWindowOpen: true,
             nodeIntegration: false,
             preload: path.resolve(basePath, './build/preload.js')
