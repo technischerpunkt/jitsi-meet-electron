@@ -27,6 +27,11 @@ export default {
     defaultServerURL: 'https://jitsi.technischerpunkt.org',
 
     /**
+     * The default server Timeout in seconds.
+     */
+    defaultServerTimeout: 10,
+
+    /**
      * URL to send feedback.
      */
     feedbackURL: 'mailto:kontakt@technischerpunkt.org',

@@ -6,6 +6,7 @@ Fork from [Technischer Punkt] of the Desktop application for [Jitsi Meet] built 
 
 ## Features
 
+- [End-to-End Encryption](https://jitsi.org/blog/e2ee/) support (BETA)
 - Works with any Jitsi Meet deployment
 - Local settings
 - Builtin auto-updates
@@ -57,10 +58,10 @@ location /external_api.js {
 }
 ```
 
-The following additional HTTP headers are known not to work with the Electron App:
+:warning: The following additional HTTP headers are known to break the Electron App:
 
 ```
-Content-Security-Policy "frame-ancestors 'none'";
+Content-Security-Policy "frame-ancestors [looks like any value is bad]";
 X-Frame-Options "DENY";
 ```
 
