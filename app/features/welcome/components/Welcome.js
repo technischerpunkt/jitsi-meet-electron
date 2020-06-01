@@ -204,7 +204,7 @@ class Welcome extends Component<Props, State> {
      * @returns {void}
      */
     _onJoin() {
-        const inputURL = this.state.url;
+        const inputURL = this.state.url || this.state.generatedRoomname;
         const conference = createConferenceObjectFromURL(inputURL);
 
         // Don't navigate if conference couldn't be created
