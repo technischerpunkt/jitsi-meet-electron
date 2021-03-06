@@ -19,7 +19,7 @@ Download our latest release and you're off to the races!
 
 | Windows | macOS | GNU/Linux (64-bit only) |
 | -- | -- | -- |
-| [Download](https://github.com/jitsi/jitsi-meet-electron/releases/latest/download/jitsi-meet.exe) | [Download](https://github.com/jitsi/jitsi-meet-electron/releases/latest/download/jitsi-meet.dmg) | [Download](https://github.com/jitsi/jitsi-meet-electron/releases/latest/download/jitsi-meet-x86_64.AppImage) |
+| [Download](https://github.com/technischerpunkt/jitsi-meet-electron/releases/latest/download/technischerpunkt-jitsi.exe) | [Download](https://github.com/technischerpunkt/jitsi-meet-electron/releases/latest/download/technischerpunkt-jitsi.dmg) | [Download](https://github.com/technischerpunkt/jitsi-meet-electron/releases/latest/download/technischerpunkt-jitsi-x86_64.AppImage) |
 
 ### Third-Party builds
 
