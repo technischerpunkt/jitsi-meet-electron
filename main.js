@@ -4,9 +4,9 @@ const {
     BrowserWindow,
     Menu,
     app,
-    ipcMain,
-    shell
+    ipcMain
 } = require('electron');
+const contextMenu = require('electron-context-menu');
 const debug = require('electron-debug');
 const isDev = require('electron-is-dev');
 const { autoUpdater } = require('electron-updater');
@@ -21,13 +21,17 @@ const {
 const path = require('path');
 const URL = require('url');
 const config = require('./app/features/config');
+const { openExternalLink } = require('./app/features/utils/openExternalLink');
+const pkgJson = require('./package.json');
+
+const showDevTools = Boolean(process.env.SHOW_DEV_TOOLS) || (process.argv.indexOf('--show-dev-tools') > -1);
 
 // We need this because of https://github.com/electron/electron/issues/18214
 app.commandLine.appendSwitch('disable-site-isolation-trials');
 
-// https://bugs.chromium.org/p/chromium/issues/detail?id=1086373
-app.commandLine.appendSwitch('disable-webrtc-hw-encoding');
-app.commandLine.appendSwitch('disable-webrtc-hw-decoding');
+// This allows BrowserWindow.setContentProtection(true) to work on macOS.
+// https://github.com/electron/electron/issues/19880
+app.commandLine.appendSwitch('disable-features', 'IOSurfaceCapturer');
 
 // Needed until robot.js is fixed: https://github.com/octalmage/robotjs/issues/580
 app.allowRendererProcessReuse = false;
@@ -35,11 +39,23 @@ app.allowRendererProcessReuse = false;
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
 
+// Enable context menu so things like copy and paste work in input fields.
+contextMenu({
+    showLookUpSelection: false,
+    showSearchWithGoogle: false,
+    showCopyImage: false,
+    showCopyImageAddress: false,
+    showSaveImage: false,
+    showSaveImageAs: false,
+    showInspectElement: true,
+    showServices: false
+});
+
 // Enable DevTools also on release builds to help troubleshoot issues. Don't
 // show them automatically though.
 debug({
     isEnabled: true,
-    showDevTools: false
+    showDevTools
 });
 
 /**
@@ -57,13 +73,14 @@ if (isDev) {
  */
 let mainWindow = null;
 
+let webrtcInternalsWindow = null;
+
 /**
  * Add protocol data
  */
 const appProtocolSurplus = `${config.default.appProtocolPrefix}://`;
 let rendererReady = false;
 let protocolDataForFrontApp = null;
-
 
 /**
  * Sets the application menu. It is hidden on all platforms except macOS because
@@ -170,15 +187,14 @@ function createJitsiMeetWindow() {
         y: windowState.y,
         width: windowState.width,
         height: windowState.height,
-        icon: path.resolve(basePath, './resources/icons/icon_512x512.png'),
+        icon: path.resolve(basePath, './resources/icon.png'),
         minWidth: 800,
         minHeight: 600,
         show: false,
         webPreferences: {
-            // used for insertable streams, for E2EE
-            // cases bugs, so disabled for now
-            // see https://github.com/jitsi/jitsi-meet-electron/issues/352
-            experimentalFeatures: false,
+            enableBlinkFeatures: 'RTCInsertableStreams,WebAssemblySimd',
+            enableRemoteModule: true,
+            contextIsolation: false,
             nativeWindowOpen: true,
             nodeIntegration: false,
             preload: path.resolve(basePath, './build/preload.js')
@@ -192,14 +208,14 @@ function createJitsiMeetWindow() {
     initPopupsConfigurationMain(mainWindow);
     setupAlwaysOnTopMain(mainWindow);
     setupPowerMonitorMain(mainWindow);
-    setupScreenSharingMain(mainWindow, config.default.appName);
+    setupScreenSharingMain(mainWindow, config.default.appName, pkgJson.build.appId);
 
     mainWindow.webContents.on('new-window', (event, url, frameName) => {
         const target = getPopupTarget(url, frameName);
 
         if (!target || target === 'browser') {
             event.preventDefault();
-            shell.openExternal(url);
+            openExternalLink(url);
         }
     });
     mainWindow.on('closed', () => {
@@ -210,12 +226,25 @@ function createJitsiMeetWindow() {
     });
 
     /**
-     * This is for windows [win32]
-     * so when someone tries to enter something like jitsi://test
+     * When someone tries to enter something like jitsi-meet://test
      *  while app is closed
      * it will trigger this event below
      */
-    handleProtocolCall(process.argv[2]);
+    handleProtocolCall(process.argv.pop());
+}
+
+/**
+ * Opens new window with WebRTC internals.
+ */
+function createWebRTCInternalsWindow() {
+    const options = {
+        minWidth: 800,
+        minHeight: 600,
+        show: true
+    };
+
+    webrtcInternalsWindow = new BrowserWindow(options);
+    webrtcInternalsWindow.loadURL('chrome://webrtc-internals');
 }
 
 /**
@@ -280,6 +309,10 @@ app.on('certificate-error',
 
 app.on('ready', createJitsiMeetWindow);
 
+if (isDev) {
+    app.on('ready', createWebRTCInternalsWindow);
+}
+
 app.on('second-instance', (event, commandLine) => {
     /**
      * If someone creates second instance of the application, set focus on
@@ -291,10 +324,10 @@ app.on('second-instance', (event, commandLine) => {
 
         /**
          * This is for windows [win32]
-         * so when someone tries to enter something like jitsi://test
+         * so when someone tries to enter something like jitsi-meet://test
          * while app is opened it will trigger protocol handler.
          */
-        handleProtocolCall(commandLine[2]);
+        handleProtocolCall(commandLine.pop());
     }
 });
 
@@ -323,7 +356,7 @@ if (isDev && process.platform === 'win32') {
 
 /**
  * This is for mac [darwin]
- * so when someone tries to enter something like jitsi://test
+ * so when someone tries to enter something like jitsi-meet://test
  * it will trigger this event below
  */
 app.on('open-url', (event, data) => {

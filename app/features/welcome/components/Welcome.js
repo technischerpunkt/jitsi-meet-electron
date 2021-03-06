@@ -5,8 +5,10 @@ import { SpotlightTarget } from '@atlaskit/onboarding';
 import Page from '@atlaskit/page';
 import { AtlasKitThemeProvider } from '@atlaskit/theme';
 
-import { generateRoomWithoutSeparator } from 'js-utils/random';
+import { generateRoomWithoutSeparator } from '@jitsi/js-utils/random';
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
+import { compose } from 'redux';
 import type { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
@@ -17,7 +19,6 @@ import { RecentList } from '../../recent-list';
 import { createConferenceObjectFromURL } from '../../utils';
 
 import { Body, Button, FieldWrapper, Form, Header, Label, Wrapper } from '../styled';
-
 
 type Props = {
 
@@ -30,6 +31,11 @@ type Props = {
      * React Router location object.
      */
     location: Object;
+
+    /**
+     * I18next translate function.
+     */
+     t: Function;
 };
 
 type State = {
@@ -250,12 +256,13 @@ class Welcome extends Component<Props, State> {
     _renderHeader() {
         const locationState = this.props.location.state;
         const locationError = locationState && locationState.error;
+        const { t } = this.props;
 
         return (
             <Header>
                 <SpotlightTarget name = 'conference-url'>
                     <Form onSubmit = { this._onFormSubmit }>
-                        <Label>{ 'Enter a name for your conference or a Jitsi URL' } </Label>
+                        <Label>{ t('enterConferenceNameOrUrl') } </Label>
                         <FieldWrapper>
                             <FieldTextStateless
                                 autoFocus = { true }
@@ -270,7 +277,7 @@ class Welcome extends Component<Props, State> {
                                 appearance = 'primary'
                                 onClick = { this._onJoin }
                                 type = 'button'>
-                                GO
+                                { t('go') }
                             </Button>
                         </FieldWrapper>
                     </Form>
@@ -304,4 +311,4 @@ class Welcome extends Component<Props, State> {
     }
 }
 
-export default connect()(Welcome);
+export default compose(connect(), withTranslation())(Welcome);

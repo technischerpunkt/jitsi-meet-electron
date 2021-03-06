@@ -19,7 +19,7 @@ export default {
     * The prefix for application protocol.
     * You will also need to replace this in package.json.
     */
-    appProtocolPrefix: 'jitsi',
+    appProtocolPrefix: 'jitsi-meet',
 
     /**
      * The default server URL of Jitsi Meet Deployment that will be used.
@@ -29,12 +29,12 @@ export default {
     /**
      * The default server Timeout in seconds.
      */
-    defaultServerTimeout: 10,
+    defaultServerTimeout: 30,
 
     /**
      * URL to send feedback.
      */
-    feedbackURL: 'mailto:kontakt@technischerpunkt.org',
+    feedbackURL: 'https://github.com/technischerpunkt/jitsi-meet-electron/issues',
 
     /**
      * The URL of Privacy Policy Page.

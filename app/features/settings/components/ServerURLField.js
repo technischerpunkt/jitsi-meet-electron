@@ -3,13 +3,16 @@
 import { FieldTextStateless } from '@atlaskit/field-text';
 
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
+import { compose } from 'redux';
 
 import config from '../../config';
-import { getExternalApiURL } from '../../utils';
+import { normalizeServerURL } from '../../utils';
 
 import { setServerURL } from '../actions';
+import { Form } from '../styled';
 
 type Props = {
 
@@ -22,6 +25,11 @@ type Props = {
      * Default Jitsi Meet Server URL in (redux) store.
      */
     _serverURL: string;
+
+    /**
+     * I18next translation function.
+     */
+    t: Function;
 };
 
 type State = {
@@ -64,21 +72,22 @@ class ServerURLField extends Component<Props, State> {
      * @returns {ReactElement}
      */
     render() {
+        const { t } = this.props;
+
         return (
-            <form onSubmit = { this._onServerURLSubmit }>
+            <Form onSubmit = { this._onServerURLSubmit }>
                 <FieldTextStateless
-                    invalidMessage
-                        = { 'Invalid Server URL or external API not enabled' }
+                    invalidMessage = { t('settings.invalidServer') }
                     isInvalid = { !this.state.isValid }
                     isValidationHidden = { this.state.isValid }
-                    label = 'Server URL'
+                    label = { t('settings.serverUrl') }
                     onBlur = { this._onServerURLSubmit }
                     onChange = { this._onServerURLChange }
                     placeholder = { config.defaultServerURL }
                     shouldFitContainer = { true }
                     type = 'text'
                     value = { this.state.serverURL } />
-            </form>
+            </Form>
         );
     }
 
@@ -113,25 +122,32 @@ class ServerURLField extends Component<Props, State> {
     }
 
     /**
-     * Validates the Server URL by fetching external_api.js using the HEAD
-     * method.
+     * Validates the Server URL.
      *
      * @returns {void}
      */
     _validateServerURL() {
-        fetch(getExternalApiURL(this.state.serverURL), {
-            method: 'HEAD'
-        })
-        .then((response: Object) => {
-            this.setState({
-                isValid: response.ok
-            });
-        })
-        .catch(() => {
-            this.setState({
-                isValid: false
-            });
-        });
+        if (!this.state.serverURL.trim()) {
+            return true;
+        }
+
+        const url = normalizeServerURL(this.state.serverURL);
+        let isValid;
+
+        try {
+            // eslint-disable-next-line no-new
+            const tmp = new URL(url);
+
+            if (!tmp.protocol.startsWith('http')) {
+                throw new Error('Invalid protocol');
+            }
+
+            isValid = true;
+        } catch (_) {
+            isValid = false;
+        }
+
+        this.setState({ isValid });
     }
 }
 
@@ -149,4 +165,4 @@ function _mapStateToProps(state: Object) {
     };
 }
 
-export default connect(_mapStateToProps)(ServerURLField);
+export default compose(connect(_mapStateToProps), withTranslation())(ServerURLField);
